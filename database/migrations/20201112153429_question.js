@@ -4,6 +4,7 @@ exports.up = function(knex) {
             tbl.increments()
             tbl.string('question_text')
             tbl.integer('sessionID')
+               .unique()
                .notNullable()
                .unsigned()
                .references('id')

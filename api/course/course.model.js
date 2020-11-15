@@ -27,9 +27,23 @@ const getCourseById = (courseID) => {
             .first()
 }
 
+const getSessionOfACourse = (courseID) => {
+    return db('session as s')
+            .where('s.courseID', courseID)
+            .join('module as m', 'm.id', 's.moduleID')
+            .select(
+                's.id as sessionID',
+                's.courseID',
+                's.moduleID',
+                's.order_number',
+                'm.module_name'
+            )
+}
+
 
 module.exports = {
     addCourse,
     getCourses,
-    getCourseById
+    getCourseById,
+    getSessionOfACourse
 }

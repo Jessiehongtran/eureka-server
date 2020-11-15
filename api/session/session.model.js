@@ -13,9 +13,11 @@ const getSessions = () => {
             .join('module as m', 'm.id', 's.moduleID')
             .join('user as u', 'u.id', 'c.userID')
             .select(
-                's.*',
-                'c.*',
-                'm.*',
+                's.id as sessionID',
+                's.order_number as order_number',
+                'c.id as courseID',
+                'm.id as moduleID',
+                'm.module_name as module_name',
                 'u.email as user_email'
             )
 }

@@ -1,5 +1,6 @@
 const route = require('express').Router();
-const courseModel = require('./course.model')
+const courseModel = require('./course.model');
+const questionModel = require('../question/question.model');
 
 //GET courses
 route.get('/', async (req,res) => {
@@ -23,11 +24,32 @@ route.get('/:courseID', async (req, res) => {
 })
 
 //ADD course
-route.post('/', async (req,res) => {
+route.post('/', async (req, res) => {
     const course = req.body
     try {
         const respondID = await courseModel.addCourse(course)
         res.status(200).json(respondID)
+    } catch (err){
+        res.status(500).json(err.message)
+    }
+})
+
+//GET content of a course
+route.get('/content/:courseID', async (req, res) => {
+    const courseID = req.params.courseID
+    try {
+        let sessions = await courseModel.getSessionOfACourse(courseID)
+        for (let i = 0; i < sessions.length; i++){
+            try {
+                //if there is this session in this table, get content of it
+                sessions[i].question = await questionModel.getQuestionBySessionId(sessions[i].sessionID)
+
+            } catch (err){
+
+            }
+        }
+        res.status(200).json(sessions)
+
     } catch (err){
         res.status(500).json(err.message)
     }

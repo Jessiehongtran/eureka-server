@@ -10,7 +10,6 @@ exports.up = function(knex) {
            .onDelete('CASCADE')
            .onUpdate('CASCADE')
         tbl.integer('moduleID')
-           .notNullable()
            .unsigned()
            .references('id')
            .inTable('module')

@@ -17,8 +17,30 @@ const getQuestionById = (questionID) => {
             .first()
 }
 
+const updateQuestion = (change, questionID) => {
+    return db('question')
+            .where({id: questionID})
+            .update(change)
+}
+
+const deleteQuestion = (questionID) => {
+    return db('question')
+            .where({id: questionID})
+            .del()
+}
+
+const getQuestionBySessionId = (sessionID) => {
+    return db('question')
+            .where({sessionID: sessionID})
+            .first()
+}
+
+
 module.exports = {
     addQuestion,
     getQuestions,
-    getQuestionById
+    getQuestionById,
+    updateQuestion,
+    getQuestionBySessionId,
+    deleteQuestion
 }

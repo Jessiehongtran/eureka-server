@@ -33,4 +33,7 @@ route.post('/', async (req,res) => {
     }
 })
 
+//UPDATE a session
+
+
 module.exports = route;

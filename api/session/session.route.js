@@ -33,7 +33,16 @@ route.post('/', async (req,res) => {
     }
 })
 
-//UPDATE a session
+//GET sessions of a course
+route.get('/course/:courseID', async (req, res) => {
+    const courseID = req.params.courseID
+    try {
+        const sessions = await sessionModel.getSessionOfACourse(courseID)
+        res.status(200).json(sessions)
+    } catch (err){
+        res.status(500).json(err.message)
+    }
+})
 
 
 module.exports = route;

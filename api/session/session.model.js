@@ -37,8 +37,25 @@ const getSessionById = (sessionID) => {
             .first()
 }
 
+const getSessionOfACourse = (courseID) => {
+    return db('session as s')
+            .where('s.courseID', courseID)
+            .join('course_pager as c', 'c.id', 's.courseID')
+            .join('module as m', 'm.id', 's.moduleID')
+            .join('user as u', 'u.id', 'c.userID')
+            .select(
+                's.id as sessionID',
+                's.order_number as order_number',
+                'c.id as courseID',
+                'm.id as moduleID',
+                'm.module_name as module_name',
+                'u.email as user_email'
+            )
+}
+
 module.exports = {
     addSession,
     getSessions,
-    getSessionById
+    getSessionById,
+    getSessionOfACourse
 }

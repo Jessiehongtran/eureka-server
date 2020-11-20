@@ -1,4 +1,5 @@
 const db = require('../../database/dbConfig');
+const knex = require('knex')
 
 const addSession = (session) => {
     return db('session')
@@ -55,9 +56,33 @@ const getSessionOfACourse = (courseID) => {
             )
 }
 
+const getContentBySession = (sessionID, moduleID) => {                
+    if (moduleID == 1){
+        return db('session as s')
+                .where('s.id', sessionID)
+                .join('pure_text as t', 't.sessionID', 's.id')
+                .join('category as c', 'c.sessionID', 's.id')
+                .select(
+                    't.text as header',
+                    'c.category_name as category_name',
+                )
+
+    } else  if (moduleID == 3){
+        return db('session as s')
+                .where('s.id', sessionID)
+                .join('question as q', 'q.sessionID', 's.id')
+                .join('choice as c', 'c.sessionID', 's.id')
+                .select(
+                    'q.question_text as question_text',
+                    'c.choice_text as choice_text'
+                )
+    }
+}
+
 module.exports = {
     addSession,
     getSessions,
     getSessionById,
-    getSessionOfACourse
+    getSessionOfACourse,
+    getContentBySession
 }

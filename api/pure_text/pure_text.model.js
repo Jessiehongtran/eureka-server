@@ -1,8 +1,9 @@
 const { text } = require('express');
 const db = require('../../database/dbConfig');
 
-const getText = () => {
+const getTextBySessionID = (sessionID) => {
     return db('pure_text')
+            .where({sessionID: sessionID})
 }
 
 const addText = text => {
@@ -19,7 +20,7 @@ const updateText = (change, textId) => {
 } 
 
 module.exports = {
-    getText,
+    getTextBySessionID,
     addText,
     updateText
 }

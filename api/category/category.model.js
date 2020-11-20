@@ -1,8 +1,9 @@
 const db = require('../../database/dbConfig');
 
 
-const getCategory = () => {
+const getCategoryBySession = (sessionID) => {
     return db('category')
+            .where({sessionID: sessionID})
 }
 
 const addCategory = (category) => {
@@ -14,7 +15,7 @@ const addCategory = (category) => {
 
 const updateCategory = (change, cateId) => {
     return db('category')
-            .where({id: categId})
+            .where({id: cateId})
             .update(change)
 }
 
@@ -24,9 +25,15 @@ const deleteCategory = (cateId) => {
             .del()
 }
 
+const findACategory = (cateId) => {
+    return db('category')
+            .where({id: cateId})
+}
+
 module.exports = {
-    getCategory,
+    getCategoryBySession,
     addCategory,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    findACategory
 }

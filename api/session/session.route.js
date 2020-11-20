@@ -22,6 +22,38 @@ route.get('/:sessionID', async (req,res) => {
     }
 })
 
+const getContentAsObject = (arr) => {
+    content = {}
+    for (let i = 0; i < arr.length; i++){
+        for (var key in arr[i]){
+            if (content[key]){
+            if (arr[i][key] !== content[key][content[key].length - 1]){
+                content[key].push(arr[i][key])
+            }
+            }
+            else {
+            content[key] = []
+            }
+        }
+    }
+    return content
+}
+
+//GET content of a session
+route.get('/content/:sessionID/:moduleID', async (req, res) => {
+    const sessionID = req.params.sessionID
+    const moduleID = req.params.moduleID
+    console.log('moduleID check', moduleID)
+    try {
+        const contentArr = await sessionModel.getContentBySession(sessionID, moduleID)
+        //make content become an object, what repeated will put as one and what's not will be put into an array
+        const contentObj = getContentAsObject(contentArr)
+        res.status(200).json(contentObj)
+    } catch (err){
+        res.status(500).json(err.message)
+    }
+})
+
 //ADD session
 route.post('/', async (req,res) => {
     const session = req.body

@@ -2,10 +2,22 @@ const route = require('express').Router();
 const categoryModel = require('./category.model');
 
 //GET categories
-route.get('/', async (req, res) => {
+route.get('/session/:sessionID', async (req, res) => {
+    const sessionID = req.params.sessionID
     try {
-        const categories = await categoryModel.getCategory()
+        const categories = await categoryModel.getCategoryBySession(sessionID)
         res.status(200).json(categories)
+    } catch (err){
+        res.status(500).json(err.message)
+    }
+})
+
+//FIND a category
+route.get('/:categoryID', async (req, res) => {
+    const categoryID = req.params.categoryID
+    try {
+        const category = await categoryModel.findACategory(categoryID)
+        res.status(200).json(category)
     } catch (err){
         res.status(500).json(err.message)
     }

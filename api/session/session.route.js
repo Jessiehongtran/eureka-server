@@ -76,5 +76,17 @@ route.get('/course/:courseID', async (req, res) => {
     }
 })
 
+//UPDATE session
+route.patch('/:sessionID', async (req, res) => {
+    const sessionID = req.params.sessionID
+    const change = req.body
+    try {
+        const count = await sessionModel.updateSession(change, sessionID)
+        res.status(200).json({message: `Updated ${count} session`})
+    } catch (err){
+        res.status(500).json(err.message)
+    }
+})
+
 
 module.exports = route;

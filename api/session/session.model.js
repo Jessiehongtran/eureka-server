@@ -79,10 +79,17 @@ const getContentBySession = (sessionID, moduleID) => {
     }
 }
 
+const updateSession = (change, sessionID) => {
+    return db('session')
+            .where({id: sessionID})
+            .update(change)
+}
+
 module.exports = {
     addSession,
     getSessions,
     getSessionById,
     getSessionOfACourse,
-    getContentBySession
+    getContentBySession,
+    updateSession
 }

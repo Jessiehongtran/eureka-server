@@ -88,5 +88,16 @@ route.patch('/:sessionID', async (req, res) => {
     }
 })
 
+//DELETE session
+route.delete('/:sessionID', async (req, res) => {
+    const sessionID = req.params.sessionID
+    try {
+        const count = await sessionModel.deleteSession(sessionID)
+        res.status(200).json({message: `Deleted ${count} session`})
+    } catch (err){
+        res.status(500).json(err.message)
+    }
+})
+
 
 module.exports = route;

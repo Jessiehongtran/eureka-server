@@ -85,11 +85,18 @@ const updateSession = (change, sessionID) => {
             .update(change)
 }
 
+const deleteSession = (sessionID) => {
+    return db('session')
+            .where({id: sessionID})
+            .del()
+}
+
 module.exports = {
     addSession,
     getSessions,
     getSessionById,
     getSessionOfACourse,
     getContentBySession,
-    updateSession
+    updateSession,
+    deleteSession
 }

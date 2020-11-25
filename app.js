@@ -12,6 +12,7 @@ const choiceRoute = require('./api/choice/choice.route');
 const textRoute = require('./api/pure_text/pure_text.route');
 const categoryRoute = require('./api/category/category.route');
 const imageRoute = require('./api/image/image.route');
+const videoRoute = require('./api/video/video.route');
 
 app.use(express.json());
 app.use(cors());
@@ -24,5 +25,6 @@ app.use('/module', moduleRoute);
 app.use('/text', textRoute);
 app.use('/category', categoryRoute);
 app.use('/image', imageRoute);
+app.use('/video', videoRoute);
 
 module.exports = app;

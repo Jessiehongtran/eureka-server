@@ -1,38 +1,39 @@
 const route = require('express').Router();
-const videoModel = require('./video.model');
-const cloudinary = require('cloudinary').v2;
+const aws = require('aws-sdk');
+const fs = require('fs');
+const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
-
-cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.API_KEY,
-    api_secret: process.env.API_SECRET
+//config aws with your accessKeyId and your secretAccessKey
+aws.config.update({
+    accessKeyId: process.env.S3_ACCESS_KEY,
+    secretAccessKey: process.env.S3_ACCESS_SECRET  
 })
 
+route.post('/session/:sessionID', (req, res) => {
+    const file = Object.values(req.files)[0];
+    const s3 = new aws.S3(); //create a new instance of S3
+    const fileName = `${file.name}/${uuidv4()}`;
+    const fileType = file.type;
+    const path = file.path;
 
-route.post('/session/:sessionID', async (req, res) => {
-    const sessionID = req.params.sessionID;
-    const values = Object.values(req.files);
-    console.log('path', values[0].path)
-    cloudinary.uploader.upload(values[0].path, function(error, result) {console.log(result, error)});
-    // const promises = values.map(video => cloudinary.uploader.upload(video.path));
-    // Promise
-    //      .all(promises)
-    //      .then(videos => {
-    //          console.log('videos got back', videos)
-    //         const video = {
-    //             video_url: videos[0].url,
-    //             sessionID: sessionID
-    //         }
-    //         videoModel.addVideo(video)
-    //                   .then(response => {
-    //                       response.uploaded_video = videos[0].url
-    //                       res.status(200).json(response)
-    //                   })
-    //                   .catch(err => res.status(500).json(err.message))
-    //      })
-    //      .catch(err => res.status(500).json(err.message))
+    //set up the payload of what we are sending to the S3 api
+    const s3Params = {
+        Bucket: process.env.Bucket,
+        Key: fileName,
+        Expires: 500,
+        ContentType: fileType,
+        ACL: 'public-read',
+        Body: fs.readFileSync(path)
+    }
+
+    s3.upload(s3Params, function(err, data) {
+        if (err){
+            throw err;
+        }
+        console.log('success', data)
+        res.status(200).json(data)
+    })
 })
 
 module.exports = route

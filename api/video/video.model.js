@@ -7,6 +7,14 @@ const addVideo = (video) => {
             .then(ids => ({id: ids[0]}))
 }
 
+const getVideo = (sessionID) => {
+    return db('video')
+            .where({sessionID: sessionID})
+            .first()
+            
+}
+
 module.exports = {
-    addVideo
+    addVideo,
+    getVideo
 }

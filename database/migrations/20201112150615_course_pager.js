@@ -4,6 +4,7 @@ exports.up = function(knex) {
         tbl.increments()
         tbl.string('course_name')
         tbl.string('description')
+        tbl.boolean('isPublished')
         tbl.integer('userID')
            .notNullable()
            .unsigned()

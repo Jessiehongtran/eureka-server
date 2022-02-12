@@ -1,6 +1,7 @@
 const route = require('express').Router();
 const courseModel = require('./course.model');
 const questionModel = require('../question/question.model');
+const textModel = require('../pure_text/pure_text.model');
 
 //GET courses
 route.get('/', async (req,res) => {
@@ -18,6 +19,18 @@ route.get('/:courseID', async (req, res) => {
     try {
         const course = await courseModel.getCourseById(courseID)
         res.status(200).json(course)
+    } catch (err){
+        res.status(500).json(err.message)
+    }
+})
+
+//UPDATE COURSE
+route.patch('/:courseID', async (req, res) => {
+    const courseID = req.params.courseID;
+    const change = req.body;
+    try {
+        const count = await courseModel.updateCourse(change, courseID)
+        res.status(200).json({message: `Updated ${count} course`})
     } catch (err){
         res.status(500).json(err.message)
     }

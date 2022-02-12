@@ -40,10 +40,17 @@ const getSessionOfACourse = (courseID) => {
             )
 }
 
+const updateCourse = (change, courseID) => {
+    return db('course_pager as c')
+            .where({id: courseID})
+            .update(change)
+}
+
 
 module.exports = {
     addCourse,
     getCourses,
     getCourseById,
-    getSessionOfACourse
+    getSessionOfACourse,
+    updateCourse
 }

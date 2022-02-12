@@ -51,6 +51,7 @@ route.post('/session/:sessionID', async (req, res) => {
     })
 })
 
+
 //GET video
 route.get('/session/:sessionID', async (req, res) => {
     const sessionID = req.params.sessionID;
